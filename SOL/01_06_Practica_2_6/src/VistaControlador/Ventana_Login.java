@@ -1,10 +1,9 @@
 package VistaControlador;
 
+import static Modelo.Base_de_Datos.listarUsuario;
+import static Modelo.Base_de_Datos.verificarUsuario;
 import Modelo.Login;
-import Modelo.Usuario;
 import java.awt.Color;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
@@ -32,12 +31,30 @@ public class Ventana_Login extends javax.swing.JFrame {
         }).start();
     }
 
-    //Metodo para mostrar mensaje en rojo
+    //Metodo para mostrar mensaje de error en rojo
     public void mostrarMensajeError() {
-        
-        
-        textoIncorrecto.setForeground(Color.RED); 
-        textoIncorrecto.setVisible(true); 
+        textoIncorrecto.setForeground(Color.RED);
+        textoIncorrecto.setVisible(true);
+    }
+
+    //Metodo para cambiar a la ventana principal con el saludo
+    public void mostrarVentanaPrincipal() {
+        Ventana_Principal ventanaPrincipal = new Ventana_Principal();
+        String saludo = ventanaPrincipal.getTextoUsuarioLogeado().getText();
+        saludo = saludo + " " + textoUsuario.getText() + " esta logueado.";
+        ventanaPrincipal.getTextoUsuarioLogeado().setText(saludo);
+
+        // Mostrar la nueva ventana
+        ventanaPrincipal.setVisible(true);
+        // Cerrar la ventana actual (Login)
+        this.dispose();
+    }
+
+    //Metodo para cambiar a la ventana registrar usuarios
+    public void mostrarVentanaRegistrar() {
+        Ventana_RegistrarUsuarios ventana_aux = new Ventana_RegistrarUsuarios();
+        ventana_aux.setVisible(true);
+        this.dispose();
     }
 
     /**
@@ -68,6 +85,7 @@ public class Ventana_Login extends javax.swing.JFrame {
         botonLogear = new javax.swing.JButton();
         textoPasswd = new javax.swing.JPasswordField();
         textoIncorrecto = new javax.swing.JLabel();
+        botonTexto = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
@@ -107,6 +125,17 @@ public class Ventana_Login extends javax.swing.JFrame {
 
         textoIncorrecto.setText("Usuario/Password incorrectos, introduzcalos de nuevo.");
 
+        botonTexto.setBackground(null);
+        botonTexto.setText("Haz click para crear una nueva cuenta");
+        botonTexto.setBorderPainted(false);
+        botonTexto.setContentAreaFilled(false);
+        botonTexto.setFocusPainted(false);
+        botonTexto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonTextoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panel_LoginLayout = new javax.swing.GroupLayout(panel_Login);
         panel_Login.setLayout(panel_LoginLayout);
         panel_LoginLayout.setHorizontalGroup(
@@ -133,7 +162,10 @@ public class Ventana_Login extends javax.swing.JFrame {
                         .addGap(56, 56, 56)
                         .addComponent(textoIncorrecto))
                     .addGroup(panel_LoginLayout.createSequentialGroup()
-                        .addGap(109, 109, 109)
+                        .addGap(82, 82, 82)
+                        .addComponent(botonTexto))
+                    .addGroup(panel_LoginLayout.createSequentialGroup()
+                        .addGap(112, 112, 112)
                         .addComponent(botonLogear, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(57, Short.MAX_VALUE))
         );
@@ -155,7 +187,9 @@ public class Ventana_Login extends javax.swing.JFrame {
                 .addComponent(textoIncorrecto)
                 .addGap(18, 18, 18)
                 .addComponent(botonLogear)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botonTexto)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -175,33 +209,21 @@ public class Ventana_Login extends javax.swing.JFrame {
 
     private void botonLogearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLogearActionPerformed
 
-        if (Login.arr_Users.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "No hay usuarios registrados.", "Error.", JOptionPane.ERROR_MESSAGE);
+        if (!listarUsuario()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "No hay usuarios registrados en la bbdd.", "Error.", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        String contrasena = String.valueOf(textoPasswd.getPassword());
+        String passwd = String.valueOf(textoPasswd.getPassword());
 
-        if (Login.comprobarNombre(textoUsuario.getText()) && Login.comprobarPasswd(contrasena)) {
-            //Llamada otra ventana
-            Ventana_Principal ventanaPrincipal = new Ventana_Principal();  // Crear la nueva ventana
-
-            //Creo el String de que Usuario_x esta logueado y lo seteo al label
-            String saludo = ventanaPrincipal.getTextoUsuarioLogeado().getText();
-            saludo = saludo + " " + textoUsuario.getText() + " esta logueado.";
-            ventanaPrincipal.getTextoUsuarioLogeado().setText(saludo);
-
-            // Mostrar la nueva ventana
-            ventanaPrincipal.setVisible(true);
-            // Cerrar la ventana actual (Login)
-            this.dispose();
-        } else {
+        if (verificarUsuario(textoUsuario.getText(), passwd)) {
+            mostrarVentanaPrincipal();
+        } else if (!(verificarUsuario(textoUsuario.getText(), passwd))) {
             mostrarMensajeError();
             vibrarPantalla();
             return;
         }
-
-
+        
     }//GEN-LAST:event_botonLogearActionPerformed
 
     private void botonVerPasswdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVerPasswdActionPerformed
@@ -220,6 +242,10 @@ public class Ventana_Login extends javax.swing.JFrame {
     private void textoPasswdMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textoPasswdMouseReleased
         textoPasswd.setText("");
     }//GEN-LAST:event_textoPasswdMouseReleased
+
+    private void botonTextoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonTextoActionPerformed
+        mostrarVentanaRegistrar();
+    }//GEN-LAST:event_botonTextoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -264,6 +290,7 @@ public class Ventana_Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonLogear;
+    private javax.swing.JButton botonTexto;
     private javax.swing.JCheckBox botonVerPasswd;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
