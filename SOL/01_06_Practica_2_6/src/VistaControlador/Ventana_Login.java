@@ -125,7 +125,6 @@ public class Ventana_Login extends javax.swing.JFrame {
 
         textoIncorrecto.setText("Usuario/Password incorrectos, introduzcalos de nuevo.");
 
-        botonTexto.setBackground(null);
         botonTexto.setText("Haz click para crear una nueva cuenta");
         botonTexto.setBorderPainted(false);
         botonTexto.setContentAreaFilled(false);
@@ -162,11 +161,11 @@ public class Ventana_Login extends javax.swing.JFrame {
                         .addGap(56, 56, 56)
                         .addComponent(textoIncorrecto))
                     .addGroup(panel_LoginLayout.createSequentialGroup()
-                        .addGap(82, 82, 82)
-                        .addComponent(botonTexto))
-                    .addGroup(panel_LoginLayout.createSequentialGroup()
                         .addGap(112, 112, 112)
-                        .addComponent(botonLogear, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(botonLogear, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panel_LoginLayout.createSequentialGroup()
+                        .addGap(77, 77, 77)
+                        .addComponent(botonTexto)))
                 .addContainerGap(57, Short.MAX_VALUE))
         );
         panel_LoginLayout.setVerticalGroup(
@@ -185,11 +184,11 @@ public class Ventana_Login extends javax.swing.JFrame {
                     .addComponent(textoPasswd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addComponent(textoIncorrecto)
-                .addGap(18, 18, 18)
-                .addComponent(botonLogear)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botonLogear)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(botonTexto)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
