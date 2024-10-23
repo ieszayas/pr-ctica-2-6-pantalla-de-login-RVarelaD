@@ -77,7 +77,6 @@
                               <Component id="texto_Nombre" alignment="0" pref="125" max="32767" attributes="0"/>
                               <Component id="texto_Apellido" alignment="0" max="32767" attributes="0"/>
                               <Component id="texto_Correo" alignment="0" max="32767" attributes="0"/>
-                              <Component id="texto_FechaNac" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -129,11 +128,8 @@
                       <Component id="texto_Correo" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="labelFecha" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="texto_FechaNac" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace pref="24" max="32767" attributes="0"/>
+                  <Component id="labelFecha" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="28" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="botonAgregar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="botonVolver" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -194,8 +190,6 @@
         <Component class="javax.swing.JTextField" name="texto_Apellido">
         </Component>
         <Component class="javax.swing.JTextField" name="texto_Correo">
-        </Component>
-        <Component class="javax.swing.JTextField" name="texto_FechaNac">
         </Component>
         <Component class="javax.swing.JButton" name="botonAgregar">
           <Properties>

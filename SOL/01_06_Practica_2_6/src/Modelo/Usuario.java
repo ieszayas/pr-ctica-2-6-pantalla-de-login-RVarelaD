@@ -1,5 +1,7 @@
 package Modelo;
 
+import java.util.Date;
+
 public class Usuario {
 
     private String nombre_user = "nombreUserDefault";
@@ -7,12 +9,12 @@ public class Usuario {
     private String nombre = "nombreDefault";
     private String apellidos = "apellidoDefault";
     private String correo = "nombreDefault@gmail.com";
-    private String fecha_nac = "01/01/2001";
+    private Date fecha_nac = null;
 
     public Usuario() {
     }
-    
-    public Usuario(String nombre_user_e, String passwd_e, String nombre_e, String apellidos_e, String correo_e, String fecha_nac_e) {
+
+    public Usuario(String nombre_user_e, String passwd_e, String nombre_e, String apellidos_e, String correo_e, Date fecha_nac_e) {
         this.nombre_user = nombre_user_e;
         this.passwd = passwd_e;
         this.nombre = nombre_e;
@@ -20,7 +22,25 @@ public class Usuario {
         this.correo = correo_e;
         this.fecha_nac = fecha_nac_e;
     }
-    
+
+    public boolean validarCamposOpcionales(String nombre, String apellido, String email, String fechaNacimiento) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            return false;
+        }
+        if (apellido == null || apellido.trim().isEmpty()) {
+            return false;
+        }
+        if (email == null || email.trim().isEmpty() || !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) { // Valida que el correo contenga '@'
+            return false;
+        }
+        if (fechaNacimiento == null || fechaNacimiento.trim().isEmpty()) {
+            return false;
+        }
+
+        // Si todos los campos opcionales son válidos, retorna true
+        return true;
+    }
+
     public Usuario(String nombre_user_e, String passwd_e) {
         this.nombre_user = nombre_user_e;
         this.passwd = passwd_e;
@@ -34,11 +54,11 @@ public class Usuario {
         this.correo = correo;
     }
 
-    public String getFecha_nac() {
+    public Date getFecha_nac() {
         return fecha_nac;
     }
 
-    public void setFecha_nac(String fecha_nac) {
+    public void setFecha_nac(Date fecha_nac) {
         this.fecha_nac = fecha_nac;
     }
 
@@ -73,5 +93,5 @@ public class Usuario {
     public void setPasswd(String passwd) {
         this.passwd = passwd;
     }
-    
+
 }

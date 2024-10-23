@@ -1,13 +1,31 @@
 package VistaControlador;
 
 import static Modelo.Base_de_Datos.listarUsuario;
-import static Modelo.Base_de_Datos.verificarUsuario;
+import static Modelo.Base_de_Datos.verificarLogin;
 import Modelo.Login;
 import java.awt.Color;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 public class Ventana_Login extends javax.swing.JFrame {
+
+    public JPasswordField getTextoPasswd() {
+        return textoPasswd;
+    }
+
+    public void setTextoPasswd(JPasswordField textoPasswd) {
+        this.textoPasswd = textoPasswd;
+    }
+
+    public JTextField getTextoUsuario() {
+        return textoUsuario;
+    }
+
+    public void setTextoUsuario(JTextField textoUsuario) {
+        this.textoUsuario = textoUsuario;
+    }
 
     // Método para hacer vibrar la ventana
     public void vibrarPantalla() {
@@ -215,9 +233,9 @@ public class Ventana_Login extends javax.swing.JFrame {
 
         String passwd = String.valueOf(textoPasswd.getPassword());
 
-        if (verificarUsuario(textoUsuario.getText(), passwd)) {
+        if (verificarLogin(textoUsuario.getText(), passwd)) {
             mostrarVentanaPrincipal();
-        } else if (!(verificarUsuario(textoUsuario.getText(), passwd))) {
+        } else if (!(verificarLogin(textoUsuario.getText(), passwd))) {
             mostrarMensajeError();
             vibrarPantalla();
             return;

@@ -1,26 +1,40 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package VistaControlador;
 
+import Modelo.Base_de_Datos;
 import static Modelo.Base_de_Datos.registrarUsuario;
 import Modelo.Login;
 import Modelo.Usuario;
+import com.toedter.calendar.JDateChooser;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
 
-/**
- *
- * @author dvdor
- */
 public class Ventana_RegistrarUsuarios extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Ventana_RegistrarUsuarios
-     */
+    private JDateChooser fechaNacimientoChooser;
+
+    public static JDateChooser crearDateChooser() {
+        // Crear el JDateChooser
+        JDateChooser dateChooser = new JDateChooser();
+
+        // Configurar el formato de fecha
+        dateChooser.setDateFormatString("yyyy-MM-dd"); // Formato de fecha que se usará
+
+        return dateChooser;
+    }
+
     public Ventana_RegistrarUsuarios() {
         initComponents();
+
+        fechaNacimientoChooser = crearDateChooser();
+
+        // Agregar el DateChooser al panel en el lugar adecuado
+        jPanel1.add(fechaNacimientoChooser);
+        fechaNacimientoChooser.setBounds(195, 225, 150, 25);
     }
 
     public void cerrarVentanaAbrirLogin() {
@@ -52,7 +66,6 @@ public class Ventana_RegistrarUsuarios extends javax.swing.JFrame {
         texto_Nombre = new javax.swing.JTextField();
         texto_Apellido = new javax.swing.JTextField();
         texto_Correo = new javax.swing.JTextField();
-        texto_FechaNac = new javax.swing.JTextField();
         botonAgregar = new javax.swing.JButton();
         botonVolver = new javax.swing.JButton();
         texto_Contra = new javax.swing.JPasswordField();
@@ -136,8 +149,7 @@ public class Ventana_RegistrarUsuarios extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(texto_Nombre, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
                             .addComponent(texto_Apellido)
-                            .addComponent(texto_Correo)
-                            .addComponent(texto_FechaNac))))
+                            .addComponent(texto_Correo))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -177,10 +189,8 @@ public class Ventana_RegistrarUsuarios extends javax.swing.JFrame {
                     .addComponent(labelCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(texto_Correo, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelFecha)
-                    .addComponent(texto_FechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addComponent(labelFecha)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonAgregar)
                     .addComponent(botonVolver))
@@ -203,26 +213,50 @@ public class Ventana_RegistrarUsuarios extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarActionPerformed
-       
+
         String passwd = String.valueOf(texto_Contra.getPassword());
         String confirmarPasswd = String.valueOf(texto_ConfirmarContra.getPassword());
-        boolean resultado = false;
-        
-        if(passwd.equalsIgnoreCase(confirmarPasswd)){
-        resultado = registrarUsuario(texto_Usuario.getText(), passwd, texto_Nombre.getText(),
-                texto_Apellido.getText(), texto_Correo.getText(), texto_FechaNac.getText());
+        boolean resultado = true;
+        Usuario aux = null;
+
+        // Obtener la fecha seleccionada y formatearla
+        Date fechaNacimiento = fechaNacimientoChooser.getDate();
+        if (fechaNacimiento == null) {
+            JOptionPane.showMessageDialog(this, "Por favor selecciona una fecha de nacimiento.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-        
+
+        // Convertir java.util.Date a java.sql.Date
+        java.sql.Date sqlFechaNacimiento = new java.sql.Date(fechaNacimiento.getTime());
+
+        // Crear el objeto Usuario usando la fecha formateada
+        aux = new Usuario(texto_Usuario.getText(), passwd, texto_Nombre.getText(), texto_Apellido.getText(), texto_Correo.getText(), sqlFechaNacimiento);
+
+        if (!passwd.equalsIgnoreCase(confirmarPasswd)) {
+            resultado = false;
+            javax.swing.JOptionPane.showMessageDialog(this, "Error, no coinciden las contraseñas.", "Error.", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Verificar si el usuario ya existe
+        if (Base_de_Datos.verificarUsuarioBd(texto_Usuario.getText())) {
+            resultado = false;
+            javax.swing.JOptionPane.showMessageDialog(this, "Error, un usuario con ese nombre de usuario ya está registrado.", "Error.", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Registro del usuario
         if (resultado) {
-            Usuario aux = new Usuario(texto_Usuario.getText(), passwd, texto_Nombre.getText(),
-                    texto_Apellido.getText(), texto_Correo.getText(), texto_FechaNac.getText());
-
+            // Si pasamos todas las verificaciones, registrar el nuevo usuario
             Login.arr_Users.add(aux);
-            cerrarVentanaAbrirLogin();
-
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error al registrar el usuario.", "Error.", JOptionPane.ERROR_MESSAGE);
+            resultado = Base_de_Datos.registrarUsuario(texto_Usuario.getText(), passwd, texto_Nombre.getText(), texto_Apellido.getText(), texto_Correo.getText(), sqlFechaNacimiento); // Usa el objeto sql.Date directamente
+            if (resultado) {
+                cerrarVentanaAbrirLogin();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error al registrar el usuario.", "Error.", JOptionPane.ERROR_MESSAGE);
+            }
         }
+
     }//GEN-LAST:event_botonAgregarActionPerformed
 
 
@@ -299,7 +333,6 @@ public class Ventana_RegistrarUsuarios extends javax.swing.JFrame {
     private javax.swing.JPasswordField texto_ConfirmarContra;
     private javax.swing.JPasswordField texto_Contra;
     private javax.swing.JTextField texto_Correo;
-    private javax.swing.JTextField texto_FechaNac;
     private javax.swing.JTextField texto_Nombre;
     private javax.swing.JTextField texto_Usuario;
     // End of variables declaration//GEN-END:variables

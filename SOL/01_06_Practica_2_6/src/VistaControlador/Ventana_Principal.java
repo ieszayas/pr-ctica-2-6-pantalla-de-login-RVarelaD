@@ -1,18 +1,64 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package VistaControlador;
 
+import Modelo.Base_de_Datos;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.UIManager;
 
-/**
- *
- * @author dvdor
- */
 public class Ventana_Principal extends javax.swing.JFrame {
+
+    public static String mostrarPanelContrasena() {
+        // Crear un JDialog en lugar de JFrame para una mejor experiencia de usuario
+        JDialog dialog = new JDialog();
+        dialog.setTitle("Ingreso de Contraseña");
+        dialog.setModal(true); // Hacer el diálogo modal para que bloquea la interacción con otras ventanas
+        dialog.setSize(300, 150);
+        dialog.setLocationRelativeTo(null); // Centrar el diálogo
+
+        // Crear un JPanel
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 1)); // Usar un GridLayout para organizar los componentes
+
+        // Crear el campo de contraseña
+        JPasswordField passwordField = new JPasswordField();
+        panel.add(new JLabel("Ingrese su contraseña:")); // Etiqueta para el campo
+        panel.add(passwordField); // Agregar el campo de contraseña al JPanel
+
+        // Crear el botón de confirmar
+        JButton confirmarButton = new JButton("Confirmar");
+        panel.add(confirmarButton); // Agregar el botón al JPanel
+
+        // Añadir acción al botón
+        confirmarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Obtener la contraseña ingresada
+                String contrasena = new String(passwordField.getPassword());
+                if (!contrasena.isEmpty()) {
+                    dialog.dispose(); // Cerrar el diálogo
+                    // Retornar la contraseña
+                    JOptionPane.showMessageDialog(dialog, "Contraseña ingresada: " + contrasena);
+                } else {
+                    JOptionPane.showMessageDialog(dialog, "Por favor, ingrese una contraseña.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        // Agregar el panel al diálogo
+        dialog.add(panel);
+        dialog.setVisible(true); // Hacer visible el diálogo
+
+        // Retornar la contraseña ingresada por el usuario
+        return new String(passwordField.getPassword());
+    }
 
     public JButton getBotonCerrarSesion() {
         return botonCerrarSesion;
@@ -43,7 +89,7 @@ public class Ventana_Principal extends javax.swing.JFrame {
         ventana_aux.setVisible(true);
         this.dispose();
     }
-    
+
     public void cerrarVentanaAbrirLogin() {
         Ventana_Login ventana_aux = new Ventana_Login();  // Crear la nueva ventana
         ventana_aux.setVisible(true);
@@ -72,6 +118,7 @@ public class Ventana_Principal extends javax.swing.JFrame {
         textoUsuarioLogeado = new javax.swing.JLabel();
         botonCerrarSesion = new javax.swing.JButton();
         botonNuevoUsuario = new javax.swing.JButton();
+        botonCambiarContraseña = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Principal");
@@ -97,30 +144,35 @@ public class Ventana_Principal extends javax.swing.JFrame {
             }
         });
 
+        botonCambiarContraseña.setText("Cambiar Contraseña");
+        botonCambiarContraseña.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCambiarContraseñaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(154, 154, 154)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textoBienvenido)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(jLabel1)))
+                .addContainerGap(148, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(113, 113, 113)
-                                .addComponent(textoUsuarioLogeado))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(154, 154, 154)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(textoBienvenido)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(9, 9, 9)
-                                        .addComponent(jLabel1)))))
-                        .addGap(0, 142, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(botonNuevoUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(botonCerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(107, 107, 107)
+                        .addComponent(textoUsuarioLogeado)
+                        .addGap(0, 203, Short.MAX_VALUE))
+                    .addComponent(botonNuevoUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(botonCerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(botonCambiarContraseña, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -130,13 +182,15 @@ public class Ventana_Principal extends javax.swing.JFrame {
                 .addComponent(textoBienvenido)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                .addGap(55, 55, 55)
                 .addComponent(textoUsuarioLogeado)
                 .addGap(32, 32, 32)
                 .addComponent(botonNuevoUsuario)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
+                .addComponent(botonCambiarContraseña)
+                .addGap(18, 18, 18)
                 .addComponent(botonCerrarSesion)
-                .addGap(21, 21, 21))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -161,6 +215,26 @@ public class Ventana_Principal extends javax.swing.JFrame {
     private void botonNuevoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoUsuarioActionPerformed
         cerrarVentanaAbrirRegistrar();
     }//GEN-LAST:event_botonNuevoUsuarioActionPerformed
+
+    private void botonCambiarContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCambiarContraseñaActionPerformed
+        Ventana_Login ventana_aux = new Ventana_Login();
+        
+        if(ventana_aux.getTextoUsuario().getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Error, no se ingreso con ningun usuario.");
+            return;
+        }
+        
+        String passwd = mostrarPanelContrasena();
+        Base_de_Datos.actualizarContrasena(ventana_aux.getTextoUsuario().getText(), passwd);
+
+        if (passwd != null) {
+            JOptionPane.showMessageDialog(null, "Contraseña ingresada: " + passwd);
+            // Aquí puedes usar la contraseña como necesites
+        } else {
+            JOptionPane.showMessageDialog(null, "No se ingresó ninguna contraseña.");
+        }
+
+    }//GEN-LAST:event_botonCambiarContraseñaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -204,6 +278,7 @@ public class Ventana_Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonCambiarContraseña;
     private javax.swing.JButton botonCerrarSesion;
     private javax.swing.JButton botonNuevoUsuario;
     private javax.swing.JLabel jLabel1;
