@@ -1,6 +1,11 @@
 package Modelo;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputFilter.Config;
 import java.sql.*;
+import java.util.Properties;
 
 public class Base_de_Datos {
 
@@ -12,10 +17,11 @@ public class Base_de_Datos {
     public static Connection conectarBd() {
         Connection con = null;
         try {
+            // Intentar establecer la conexión a la base de datos
             con = DriverManager.getConnection(url + nombre_BBDD, usuario_BD, contra_BD);
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            
+        } catch (SQLException ex) {
+            System.out.println("Error al conectar a la base de datos: " + ex.getMessage());
         }
         return con;
     }
@@ -33,6 +39,7 @@ public class Base_de_Datos {
             pstmt.setString(1, nuevaContrasena);
             pstmt.setString(2, username);
             pstmt.executeUpdate();
+
             return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());

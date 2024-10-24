@@ -1,6 +1,7 @@
 package VistaControlador;
 
 import Modelo.Base_de_Datos;
+import Modelo.Usuario;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,14 @@ import javax.swing.UIManager;
 
 public class Ventana_Principal extends javax.swing.JFrame {
 
+    
+    String nombre_user = "";
+    
+    public Ventana_Principal (String usuario){
+        this.nombre_user = usuario;
+        initComponents();
+    }
+    
     public static String mostrarPanelContrasena() {
         // Crear un JDialog en lugar de JFrame para una mejor experiencia de usuario
         JDialog dialog = new JDialog();
@@ -219,21 +228,18 @@ public class Ventana_Principal extends javax.swing.JFrame {
     private void botonCambiarContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCambiarContraseñaActionPerformed
         Ventana_Login ventana_aux = new Ventana_Login();
         
-        if(ventana_aux.getTextoUsuario().getText().isEmpty()){
+        if(this.nombre_user.isEmpty()){
             JOptionPane.showMessageDialog(null, "Error, no se ingreso con ningun usuario.");
             return;
         }
         
         String passwd = mostrarPanelContrasena();
-        Base_de_Datos.actualizarContrasena(ventana_aux.getTextoUsuario().getText(), passwd);
+        boolean resultado = Base_de_Datos.actualizarContrasena(this.nombre_user, passwd);
 
-        if (passwd != null) {
-            JOptionPane.showMessageDialog(null, "Contraseña ingresada: " + passwd);
-            // Aquí puedes usar la contraseña como necesites
-        } else {
-            JOptionPane.showMessageDialog(null, "No se ingresó ninguna contraseña.");
+        if (!resultado) {
+            JOptionPane.showMessageDialog(null, "No se actualizo la contraseña.");
         }
-
+        
     }//GEN-LAST:event_botonCambiarContraseñaActionPerformed
 
     /**

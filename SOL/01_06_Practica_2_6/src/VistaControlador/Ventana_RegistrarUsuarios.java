@@ -244,6 +244,12 @@ public class Ventana_RegistrarUsuarios extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Error, un usuario con ese nombre de usuario ya está registrado.", "Error.", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
+        if(!aux.getCorreo().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")){
+            resultado = false;
+            javax.swing.JOptionPane.showMessageDialog(this, "Error, el formato de correo es incorreto.", "Error.", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         // Registro del usuario
         if (resultado) {

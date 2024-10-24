@@ -57,9 +57,13 @@ public class Ventana_Login extends javax.swing.JFrame {
 
     //Metodo para cambiar a la ventana principal con el saludo
     public void mostrarVentanaPrincipal() {
-        Ventana_Principal ventanaPrincipal = new Ventana_Principal();
+
+        String nombre_usuario = textoUsuario.getText();
+
+        Ventana_Principal ventanaPrincipal = new Ventana_Principal(nombre_usuario);
         String saludo = ventanaPrincipal.getTextoUsuarioLogeado().getText();
-        saludo = saludo + " " + textoUsuario.getText() + " esta logueado.";
+        saludo = saludo + " " + nombre_usuario + " esta logueado.";
+
         ventanaPrincipal.getTextoUsuarioLogeado().setText(saludo);
 
         // Mostrar la nueva ventana
@@ -179,11 +183,11 @@ public class Ventana_Login extends javax.swing.JFrame {
                         .addGap(56, 56, 56)
                         .addComponent(textoIncorrecto))
                     .addGroup(panel_LoginLayout.createSequentialGroup()
-                        .addGap(112, 112, 112)
-                        .addComponent(botonLogear, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panel_LoginLayout.createSequentialGroup()
                         .addGap(77, 77, 77)
-                        .addComponent(botonTexto)))
+                        .addComponent(botonTexto))
+                    .addGroup(panel_LoginLayout.createSequentialGroup()
+                        .addGap(106, 106, 106)
+                        .addComponent(botonLogear, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(57, Short.MAX_VALUE))
         );
         panel_LoginLayout.setVerticalGroup(
@@ -240,7 +244,7 @@ public class Ventana_Login extends javax.swing.JFrame {
             vibrarPantalla();
             return;
         }
-        
+
     }//GEN-LAST:event_botonLogearActionPerformed
 
     private void botonVerPasswdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVerPasswdActionPerformed
