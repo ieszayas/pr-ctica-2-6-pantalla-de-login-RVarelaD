@@ -221,8 +221,22 @@ public class Ventana_RegistrarUsuarios extends javax.swing.JFrame {
 
         // Obtener la fecha seleccionada y formatearla
         Date fechaNacimiento = fechaNacimientoChooser.getDate();
+        
+        String contraString = String.valueOf(texto_Contra.getPassword());
+        String confirmarContraString = String.valueOf(texto_ConfirmarContra.getPassword());
+        
+        if (texto_Usuario.getText().isEmpty() || contraString.isEmpty() || confirmarContraString.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, los valores usuario y contraseña no pueden estar vacios.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         if (fechaNacimiento == null) {
             JOptionPane.showMessageDialog(this, "Por favor selecciona una fecha de nacimiento.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if (texto_Apellido.getText().isEmpty() || texto_Nombre.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor introduzca valores en los campos nombre/apellidos.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
